@@ -9,3 +9,5 @@ from jactest import JacTest
 from identpar import Identpar
 
 
+__version__ = '0.1.0'
+

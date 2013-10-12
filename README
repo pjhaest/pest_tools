@@ -1,0 +1,35 @@
+PestTools 
+
+Version 0.1.0
+------------
+Initial commit
+
+Description
+-------------
+Python modules used to aid in model calibration with PEST (Doherty, 2010).
+ 
+Main goal is for quick development of visuals on important PEST output.
+
+Current highlights include:
+  - Read binary .jco file into pandas data frame
+  - Calculate parameter sensitivity for all observations or with select observation groups removed
+  - Calculate observation sensitivity
+  - Quickly select and plot different views of parameter sensitivity (by group, most sensitive, least sensitive, etc.)
+  - Read in output from JACTEST and plot data with interactive slider
+  - Read in data from IDENTPAR and rank/plot
+  - Read .rmr file from BEOPEST and plot a boxplot of run times by node
+ 
+See examples for how things work.  
+
+Dependancies
+--------------
+Listed are known to work, older versions may also work:
+python 2.7.5
+matplotlib 1.2.1
+numpy 1.7.1
+pandas 0.12.0
+
+Reference
+----------
+Doherty, J., 2010, PEST, Model-independent parameter estimation—User 
+manual, 5th ed.: Brisbane, Australia, Watermark Numerical Computing.
