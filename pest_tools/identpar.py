@@ -11,7 +11,7 @@ class Identpar:
         Parameters
         ----------
         identpar_out : str
-            Path to ouput from IDENTPAR utility
+            Path to output from IDENTPAR utility
             
         Attributes
         ----------
@@ -63,7 +63,7 @@ class Identpar:
     def plot(self, n = None, group = None):
         ''' Generate plot of parameter identifiability
         
-        Paramters
+        Parameters
         ----------
         n: {None, int}, optional
             If None then plot all parameters, else n is the number to plot.

@@ -18,8 +18,8 @@ class RMR:
             List of nodes used
         
         data : list
-           List of lists. Each node in node_list contains a seperate list of 
-           runtimes.  Index values from node_list corespond with index values 
+           List of lists. Each node in node_list contains a separate list of 
+           runtimes.  Index values from node_list correspond with index values 
            of data.
            
         node_average : list

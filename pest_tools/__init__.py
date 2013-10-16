@@ -7,7 +7,8 @@ from load_pars import load_pars
 from rmr import RMR
 from jactest import JacTest
 from identpar import Identpar
+from res import Res
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 

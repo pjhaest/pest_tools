@@ -41,7 +41,7 @@ class JacTest:
   
         '''
         # Load in output from JACTEST
-        # Get parmeter values
+        # Get parameter values
         self.par_values = open(jactest_out, 'r').readline().strip().split()[1:]
         self.par_values = np.array(self.par_values, dtype = float)
         
@@ -64,7 +64,7 @@ class JacTest:
         Notes
         ------
         Slider at bottom of plot allows user to easily move between different 
-        observations from the JACTEST ouput
+        observations from the JACTEST output
         
         '''        
         # Get first set of data to plot
@@ -75,7 +75,7 @@ class JacTest:
         # Set Up Plot
         fig, ax = plt.subplots()
         plt.subplots_adjust(left=0.25, bottom=0.25)
-        # Plot line from JACTEST results for sinlgle parameter
+        # Plot line from JACTEST results for single parameter
         jac_line, = plt.plot(self.par_values, ob_values, 'o-', lw=2, color='red')
         plt.grid(True)
         plt.ylabel('Observation Value')
@@ -97,7 +97,7 @@ class JacTest:
             ob_values = self.ob_values_all[obint:obint+1].reshape(len(self.par_values))
             # Reset y values for jac_line
             jac_line.set_ydata(ob_values)
-            # Reset limits and autoscale
+            # Reset limits and auto scale
             ax.relim()
             ax.autoscale_view(False, False, True)
             obname = self.ob_names[obint]

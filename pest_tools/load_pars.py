@@ -1,4 +1,18 @@
 def load_pars(pst_file):
+    ''' Load dictionary of parameters from PEST control file
+
+    Parameters
+    ----------
+    pst_file : str
+        File name for PEST control file
+
+    Returns
+    -------
+    pars_dict : dictionary
+        Dictionary of parameter name as key and tupel of 
+        (partrans, parchglim, parval1, parlbnd, parubnd, 
+         pargp, scale, offset, dercom) as the value
+    '''
     f = open(pst_file, 'r')
     pars_dict = dict()
     # Search for parameters section

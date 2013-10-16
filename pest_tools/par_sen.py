@@ -19,11 +19,11 @@ class ParSen:
             Dictionary of the observations returned from pest_tools.load_obs
                   
         pars_dict: dict
-            Dictionary of the parameters returened from pest_tools.load_pars
+            Dictionary of the parameters returned from pest_tools.load_pars
             
         drop_regul: {False, True}, optional
             Flag to drop regularization information in calculating parameter
-            sensitivity.  Will set weight to zerop for all observations with
+            sensitivity.  Will set weight to zero for all observations with
             'regul' in the observation group name
         
         drop_groups: list, optional
@@ -40,13 +40,13 @@ class ParSen:
         ----------
         df : Pandas DataFrame 
             DataFrame of parameter sensitivity.  Index entries of the DataFrame
-            are the paremeter names.  The DataFrame has two columns: 
+            are the parameter names.  The DataFrame has two columns: 
             1) Parameter Group and 2) Sensitivity
         
         Notes
         ------
-        For drop_regul = True could alternativly remove regularization info 
-        from jco_df but haven'tfound easy way to do so, particularly 
+        For drop_regul = True could alternatively remove regularization info 
+        from jco_df but haven't found easy way to do so, particularly 
         with large jco
         
         '''                 
@@ -94,7 +94,7 @@ class ParSen:
             par_group = pars_dict[par][5]
             par_groups.append(par_group)
         
-        # Build pandas data frome of parameter sensitivities    
+        # Build pandas data frame of parameter sensitivities    
         sen_data = {'Sensitivity' : sensitivities, 'Parameter Group' : par_groups}
         par_sen_df = pd.DataFrame(sen_data, index = jco_df.columns)
         self.df = par_sen_df
@@ -109,7 +109,7 @@ class ParSen:
         Returns
         ---------
         pandas Series
-            Series of n_tail least senstive parameters
+            Series of n_tail least sensitive parameters
                 
         '''
         return self.df.sort(columns = 'Sensitivity', ascending = False).tail(n=n_tail)['Sensitivity']
@@ -179,7 +179,7 @@ class ParSen:
                 sensitivity = self.df.sort(columns = 'Sensitivity', ascending = False).tail(n=n_head)['Sensitivity'].values
                 par_groups = self.df.sort(columns = 'Sensitivity', ascending = False).tail(n=n_head)['Parameter Group'].values            
     
-            # Asign colors for each group
+            # Assign colors for each group
             color_map = plt.get_cmap('Spectral')
             color_dict = dict()
             unique_par_groups = np.asarray(self.df.drop_duplicates(cols = 'Parameter Group')['Parameter Group'])

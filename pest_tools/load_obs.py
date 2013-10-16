@@ -3,7 +3,7 @@ def load_obs(pst_file):
 
     Parameters
     ----------
-    file_name : string
+    pst_file : string
         File name for PEST control file
    
     Returns

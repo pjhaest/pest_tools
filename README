@@ -1,8 +1,9 @@
 PestTools 
 
-Version 0.1.0
-------------
-Initial commit
+Version 0.1.0 - Initial commit
+
+Version 0.1.1 - added post processing of .res and/or .rei file.  
+    Plot measured vs model, measured vs. residual, residual stats 
 
 Description
 -------------
@@ -21,13 +22,26 @@ Current highlights include:
  
 See examples for how things work.  
 
-Dependancies
+Dependencies
 --------------
 Listed are known to work, older versions may also work:
 python 2.7.5
 matplotlib 1.2.1
 numpy 1.7.1
 pandas 0.12.0
+
+Installation
+-------------
+    Unzip files
+    from directory of unzipped files run:
+    $ python setup.py install
+
+pest_tools will be installed the current python "site-packages" directory (e.g. C:\Python27\Lib\site-packages\pest_tools)
+
+import in python using:
+>>> import pest_tools 
+In the examples an in practice PEST tools is commonly imported as follows:
+>>> import pest_tools as pt
 
 Reference
 ----------

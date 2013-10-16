@@ -8,7 +8,7 @@ import pandas as pd
 
 class ObSen:
     def __init__(self, jco_df, obs_dict):
-        ''' Read data frame of Jacobian and return observation sensitivies
+        ''' Read data frame of Jacobian and return observation sensitivities
         
         Parameters
         ----------
@@ -33,7 +33,7 @@ class ObSen:
             ob_group = obs_dict[ob][2]
             ob_groups.append(ob_group)  
         
-        # Calculate Observation Sensitivites
+        # Calculate Observation Sensitivities
         ob_sensitivities = []
         for ob in jco_df.index:
             ob_sen = np.linalg.norm(np.asarray(jco_df.ix[ob]))*float(obs_dict[ob][1])/len(jco_df.columns)
@@ -54,7 +54,7 @@ class ObSen:
         Returns
         ---------
         pandas Series
-            Series of n_tail most senstive observations
+            Series of n_tail most sensitive observations
                 
         '''
         return self.df.sort(columns = 'Sensitivity', ascending = False).tail(n=n_tail)['Sensitivity']
@@ -69,7 +69,7 @@ class ObSen:
         Returns
         -------
         pandas Series
-            Series of n_tail most senstive observations
+            Series of n_tail most sensitive observations
         '''
         return self.df.sort(columns = 'Sensitivity', ascending = False).head(n=n_head)['Sensitivity']
         

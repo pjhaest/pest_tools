@@ -31,7 +31,7 @@ def load_jco(file_name, return_par = True, return_obs = True):
     
     '''
     f = open(file_name,'rb')
-    #--the header datatype
+    #--the header data type
     npar = abs(struct.unpack('i', f.read(4))[0])
     nobs = abs(struct.unpack('i', f.read(4))[0])
     count = abs(struct.unpack('i', f.read(4))[0])
