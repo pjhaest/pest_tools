@@ -112,13 +112,19 @@ class Res:
             print 'Range:   %10.4e' % (range_w_res)
             print ' '
     
-    def plot_measure_vs_model(self, groups = None):
+    def plot_measure_vs_model(self, groups = None, plot_type = 'scatter'):
         '''Plot measured vs. model
            
            Parameters
            ----------
            groups : {None, list}, optional
                list of observation groups to include
+           
+           plot_type : {'scatter', 'hexbin'}, optional
+               Default is a scatter plot.  Hexbin is list a 2D histogram, colors
+               are log flooded.  hexbin is useful when points are numerous and
+               bunched together where symbols overlap significantly on a 
+               scatter plot
                
             Returns
             -------
@@ -134,8 +140,10 @@ class Res:
         
         # Make New Figure
         plt.figure()
-        # Make Scatter Plot        
-        plt.scatter(measured, modeled)
+        if plot_type == 'scatter':       
+            plt.scatter(measured, modeled)
+        if plot_type == 'hexbin':
+            plt.hexbin(measured, modeled, bins = 'log', alpha = 0.8, edgecolors = 'none')
   
         # Plot 1to1 (x=y) line
         data_min = min(min(measured), min(modeled))
@@ -150,14 +158,16 @@ class Res:
         if groups != None:
             plt.title(', '.join(groups))
         # Set x and Y axis equal
-        x_lim = plt.xlim()
-        plt.ylim(x_lim) 
+        #x_lim = plt.xlim()
+        #plt.ylim(x_lim)
+        plt.axis([data_min, data_max, data_min, data_max])
         
         plt.grid(True)
         plt.tight_layout()
     
     def plot_measured_vs_residual(self, groups = None, weighted = False, 
-                                  plot_mean = True, plot_std = True):
+                                  plot_mean = True, plot_std = True, 
+                                  plot_type = 'scatter'):
         ''' Plot measured vs. residual
         
             Parameters
@@ -173,6 +183,12 @@ class Res:
                 
             plot_std : {True, False}, optional
                 plot shaded area for std. dev. of residuals
+                
+            plot_type : {'scatter', 'hexbin'}, optional
+               Default is a scatter plot.  Hexbin is list a 2D histogram, colors
+               are log flooded.  hexbin is useful when points are numerous and
+               bunched together where symbols overlap significantly on a 
+               scatter plot
                 
             Returns
             --------
@@ -194,17 +210,24 @@ class Res:
         
         # Make New Figure
         plt.figure()
-        # Make Scatter Plot        
-        plt.scatter(measured, residual)
+        if plot_type == 'scatter':      
+            plt.scatter(measured, residual)
+            # Plot shadded area of residual std dev
+            if plot_std == True:
+                plt.axhspan(residual.mean()+residual.std(), residual.mean()-residual.std(), facecolor='r', alpha=0.2)
+        if plot_type == 'hexbin':
+            plt.hexbin(measured, residual, bins = 'log', alpha = 0.8, edgecolors = 'none')
+            # Plot shadded area of residual std dev
+            if plot_std == True:
+                plt.axhspan(residual.mean()+residual.std(), residual.mean()-residual.std(), fc='none', ec='r', alpha=0.5)
+        
         # Add thicker line at 0 residual
         plt.axhline(y=0, color = 'k')
         
         #Plot line for mean residual
         if plot_mean == True:
             plt.axhline(y=residual.mean(), color = 'r')
-        # Plot shaded area of residual std dev
-        if plot_std == True:
-            plt.axhspan(residual.mean()+residual.std(), residual.mean()-residual.std(), facecolor='r', alpha=0.2)
+
         
         #Labels
         plt.xlabel('Measured')
@@ -217,6 +240,5 @@ class Res:
 
         plt.grid(True)
         plt.tight_layout()
-        
         
     
