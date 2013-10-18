@@ -10,5 +10,5 @@ from identpar import Identpar
 from res import Res
 
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 

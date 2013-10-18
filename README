@@ -1,9 +1,13 @@
-PestTools 
+PEST Tools 
 
 Version 0.1.0 - Initial commit
 
 Version 0.1.1 - added post processing of .res and/or .rei file.  
     Plot measured vs model, measured vs. residual, residual stats 
+
+Version 0.1.2 - added histbin (2D histogram) plotting for residuals
+
+Version 0.1.3 - added summary and plotting of contribution of each observation group to the objective function
 
 Description
 -------------
@@ -19,8 +23,9 @@ Current highlights include:
   - Read in output from JACTEST and plot data with interactive slider
   - Read in data from IDENTPAR and rank/plot
   - Read .rmr file from BEOPEST and plot a boxplot of run times by node
+  - Read .res or .rei file and summarize.  Plot measured vs. residual, summarize contribution to objective function, residual statistics.
  
-See examples for how things work.  
+See examples for how things work (not complete).  
 
 Dependencies
 --------------
@@ -40,7 +45,7 @@ pest_tools will be installed the current python "site-packages" directory (e.g. 
 
 import in python using:
 >>> import pest_tools 
-In the examples an in practice PEST tools is commonly imported as follows:
+In the examples and in practice PEST tools is commonly imported as follows:
 >>> import pest_tools as pt
 
 Reference

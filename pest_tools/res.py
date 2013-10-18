@@ -111,6 +111,89 @@ class Res:
             print 'Minimum: %10.4e  Maximum: %10.4e' % (min_w_res, max_w_res)
             print 'Range:   %10.4e' % (range_w_res)
             print ' '
+
+    def plot_objective_contrib (self):
+        ''' Plot the contribution of each group to the objective function 
+        as a pie chart.
+        
+        Returns
+        -------
+        metplotlib pie chart
+        
+        Notes
+        -----
+        Does not plot observation group is contribution is less than 1%.  This
+        is to make the plot easier to read.
+        '''
+        contributions = []
+        groups = []
+        grouped = self.df.groupby('Group')
+        group_keys = grouped.groups.keys()
+        for key in group_keys:
+            contributions.append((grouped.get_group(key)['Weighted Residual']**2).sum())
+            groups.append(key)
+        percents = (contributions / sum(contributions))*100
+        groups = np.array(groups)
+        data = np.rec.fromarrays([percents, groups])
+        data.sort()
+        data.dtype.names = ('Percent', 'Group')
+        # Get data where percent is greater than 1
+        # Won't plot groups that fall into less than 1 percent category
+        greater_1_values = []
+        greater_1_groups = []
+        for i in data:
+            if i[0] > 1.0:
+                greater_1_values.append(i[0])
+                greater_1_groups.append(i[1]) 
+        # Assign colors for each group
+        color_map = plt.get_cmap('prism')
+        color_dict = dict()
+        for i in range(len(greater_1_groups)):
+            color = color_map(1.*i/len(greater_1_groups))
+            color_dict[greater_1_groups[i]] = color
+        colors = []
+        for group in greater_1_groups:            
+            colors.append(color_dict[group])
+        plt.pie(greater_1_values, labels=greater_1_groups, autopct='%1.1f%%', colors = colors, startangle=90)
+
+        
+    def objective_contrib (self, return_data = False):
+        '''Print out the contribution of each observation group to the 
+        objective function as a percent
+        
+        Parameters
+        ----------
+        return_data : {False, True}, optional
+            if True return data as a numpy structured array
+            
+        Returns
+        -------
+        None or Numpy array
+        '''
+        contributions = []
+        groups = []
+        grouped = self.df.groupby('Group')
+        group_keys = grouped.groups.keys()
+        for key in group_keys:
+            contributions.append((grouped.get_group(key)['Weighted Residual']**2).sum())
+            groups.append(key)
+        percents = (contributions / sum(contributions))*100
+        groups = np.array(groups)
+        #it = np.nditer(percents, flags = ['multi_index'])
+        #while not it.finished:
+            #print percents[it.multi_index], groups[it.multi_index]
+            #it.iternext()
+        data = np.rec.fromarrays([percents, groups])
+        data.dtype.names = ('Percent', 'Group')
+        #data = np.rec.fromarrays([percents, groups], dtype = [('Percent', float), ('Group', str)])
+        data.sort()
+        for item in data:
+            print '%.2f%%   %s' % (item[0], item[1])
+        if return_data == True:
+            return data
+        else:
+            return None
+
     
     def plot_measure_vs_model(self, groups = None, plot_type = 'scatter'):
         '''Plot measured vs. model
