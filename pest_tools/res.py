@@ -146,7 +146,7 @@ class Res:
                 greater_1_values.append(i[0])
                 greater_1_groups.append(i[1]) 
         # Assign colors for each group
-        color_map = plt.get_cmap('prism')
+        color_map = plt.get_cmap('Set3')
         color_dict = dict()
         for i in range(len(greater_1_groups)):
             color = color_map(1.*i/len(greater_1_groups))
