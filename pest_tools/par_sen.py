@@ -142,6 +142,53 @@ class ParSen:
         
         '''
         return self.df.xs(parameter)['Sensitivity']
+        
+    def group(self, group, n = None):
+        '''Return the sensitivites of a parameter group
+        
+        Parameters
+        ----------
+        group: string
+        
+        n: {None, int}, optional
+            If None then return all parmeters from group, else n is the number
+            of paremeters to return.
+            If n is less than 0 then return the least sensitive parameters 
+            If n is greater than 0 then retrun the most sensitive parameters
+            
+        Returns
+        -------
+        Pandas DataFrame
+        
+        '''
+        group = group.lower()
+        if n == None:
+            n_head = len(self.df.index)
+        else:
+            n_head = n
+        
+        if n_head > 0:            
+            #pars = self.df.sort(columns = 'Sensitivity', ascending = False).ix[self.df['Parameter Group'] == group, 'Sensitivity'].head(n=n_head).index
+            #sensitivity = self.df.sort(columns = 'Sensitivity', ascending = False).ix[self.df['Parameter Group'] == group, 'Sensitivity'].head(n=n_head)
+            sensitivity = self.df.sort(columns = 'Sensitivity', ascending = False).ix[self.df['Parameter Group'] == group].head(n=n_head)
+        if n_head < 0:
+            n_head = abs(n_head)            
+            #pars = self.df.sort(columns = 'Sensitivity', ascending = False).ix[self.df['Parameter Group'] == group, 'Sensitivity'].tail(n=n_head).index
+            #sensitivity = self.df.sort(columns = 'Sensitivity', ascending = False).ix[self.df['Parameter Group'] == group, 'Sensitivity'].tail(n=n_head)
+            sensitivity = self.df.sort(columns = 'Sensitivity', ascending = False).ix[self.df['Parameter Group'] == group].tail(n=n_head)
+            
+        sensitivity.index.name = 'Parameter'
+        return sensitivity
+        
+    def sum_group (self):
+        ''' Return sum of all parameters sensitivity by group
+        
+        Returns
+        -------
+        Pandas DataFrame
+        '''
+        sen_grouped = self.df.groupby(['Parameter Group']).aggregate(np.sum).sort(columns = 'Sensitivity', ascending = False)
+        return sen_grouped
 
     
         
@@ -152,7 +199,7 @@ class ParSen:
         ----------
         n: {None, int}, optional
             If None then plot all parameters, else n is the number to plot.
-            If n is less than 0 then plot lease sensitive parameters
+            If n is less than 0 then plot least sensitive parameters
             If n is greater than 0 then plot most sensitive parameters
         group: {None, str}, optional
             Parameter group to plot           

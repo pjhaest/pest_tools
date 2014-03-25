@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import math
 
 class Res:
     def __init__(self, res_file):
@@ -63,8 +64,67 @@ class Res:
             DataFrame of statistics
             
         '''       
-        group_df = self.df.ix[self.df['Group'] == group]
-        return group_df.describe()
+        group_df = self.df.ix[self.df['Group'] == group.lower()]
+        # Basic info
+        count = group_df.count()['Group']
+        min_measured = group_df.describe()['Measured'].loc['min']
+        max_measured = group_df.describe()['Measured'].loc['max']
+        range_measured = max_measured - min_measured
+        min_model = group_df.describe()['Modelled'].loc['min']
+        max_model = group_df.describe()['Modelled'].loc['max']
+        range_model = max_model - min_model
+        
+        # Residual Stats
+        mean_res = group_df['Residual'].values.mean()
+        min_res = group_df['Residual'].values.min()
+        max_res = group_df['Residual'].values.max()
+        std_res = group_df['Residual'].values.std()
+        range_res = max_res - min_res
+            
+        # Weighted Residual Stats
+        mean_w_res = group_df['Weighted Residual'].values.mean()
+        min_w_res = group_df['Weighted Residual'].values.min()
+        max_w_res = group_df['Weighted Residual'].values.max()
+        std_w_res = group_df['Weighted Residual'].values.std()
+        range_w_res = max_w_res - min_w_res
+        
+        # Absolute Residual Stats
+        mean_abs_res = group_df['Absolute Residual'].values.mean()
+        min_abs_res = group_df['Absolute Residual'].values.min()
+        max_abs_res = group_df['Absolute Residual'].values.max()
+        std_abs_res = group_df['Absolute Residual'].values.std()
+        range_abs_res = max_abs_res - min_abs_res
+        
+        # Root Mean Square Error
+        rmse = math.sqrt(((group_df['Residual'].values)**2).mean())
+        
+        # RMSE/measured range
+        rmse_over_range = rmse/float(range_measured)
+        
+        print '-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*'
+        print 'Observation Group: %s' % (group)
+        print '-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*'
+        print 'Number of observations in group: %d' % (count)
+        print '-------Measured Stats------------------'
+        print 'Minimum:   %10.4e  Maximum:   %10.4e' % (min_measured, max_measured)
+        print 'Range:     %10.4e' % (range_measured)
+        print '-------Residual Stats------------------'
+        print 'Mean:      %10.4e  Std Dev:    %10.4e' % (mean_res, std_res)
+        print 'Minimum:   %10.4e  Maximum:    %10.4e' % (min_res, max_res)
+        print 'RMSE:      %10.4e  RMSE/Range: %10.4e' % (rmse, rmse_over_range)
+        print 'Range:     %10.4e' % (range_res)
+        print '-------Absolute Residual Stats---------'
+        print 'Mean:      %10.4e  Std Dev:   %10.4e' % (mean_abs_res, std_abs_res)
+        print 'Minimum:   %10.4e  Maximum:   %10.4e' % (min_abs_res, max_abs_res)
+        print 'Range:     %10.4e' % (range_abs_res)
+        print '-------Weighted Residual Stats---------'
+        print 'Mean:      %10.4e  Std Dev:   %10.4e' % (mean_w_res, std_w_res)
+        print 'Minimum:   %10.4e  Maximum:   %10.4e' % (min_w_res, max_w_res)
+        print 'Range:     %10.4e' % (range_w_res)
+        print ' '
+        
+
+        
         
     def stats_all(self):
         ''' Return stats for each observation group
@@ -77,39 +137,66 @@ class Res:
         grouped = self.df.groupby('Group')
         group_keys = grouped.groups.keys()
         for key in group_keys:
+            group_df = self.df.ix[self.df['Group'] == key]
+            # Basic info
+            count = group_df.count()['Group']
+            min_measured = group_df.describe()['Measured'].loc['min']
+            max_measured = group_df.describe()['Measured'].loc['max']
+            range_measured = max_measured - min_measured
+            min_model = group_df.describe()['Modelled'].loc['min']
+            max_model = group_df.describe()['Modelled'].loc['max']
+            range_model = max_model - min_model
+            
             # Residual Stats
-            mean_res = grouped.get_group(key)['Residual'].mean()
-            std_res = grouped.get_group(key)['Residual'].std()
-            max_res = grouped.get_group(key)['Residual'].max()
-            min_res = grouped.get_group(key)['Residual'].min()
+            mean_res = group_df['Residual'].values.mean()
+            min_res = group_df['Residual'].values.min()
+            max_res = group_df['Residual'].values.max()
+            std_res = group_df['Residual'].values.std()
             range_res = max_res - min_res
-            # Absolute Residual Stats
-            mean_abs_res = grouped.get_group(key)['Absolute Residual'].mean()
-            std_abs_res = grouped.get_group(key)['Absolute Residual'].std()
-            max_abs_res = grouped.get_group(key)['Absolute Residual'].max()
-            min_abs_res = grouped.get_group(key)['Absolute Residual'].min()
-            range_abs_res = max_abs_res - min_abs_res
+                
             # Weighted Residual Stats
-            mean_w_res = grouped.get_group(key)['Weighted Residual'].mean()
-            std_w_res = grouped.get_group(key)['Weighted Residual'].std()
-            max_w_res = grouped.get_group(key)['Weighted Residual'].max()
-            min_w_res = grouped.get_group(key)['Weighted Residual'].min()
+            mean_w_res = group_df['Weighted Residual'].values.mean()
+            min_w_res = group_df['Weighted Residual'].values.min()
+            max_w_res = group_df['Weighted Residual'].values.max()
+            std_w_res = group_df['Weighted Residual'].values.std()
             range_w_res = max_w_res - min_w_res
+            
+            # Absolute Residual Stats
+            mean_abs_res = group_df['Absolute Residual'].values.mean()
+            min_abs_res = group_df['Absolute Residual'].values.min()
+            max_abs_res = group_df['Absolute Residual'].values.max()
+            std_abs_res = group_df['Absolute Residual'].values.std()
+            range_abs_res = max_abs_res - min_abs_res
+            
+            # Root Mean Square Error
+            rmse = math.sqrt(((group_df['Residual'].values)**2).mean())
+            
+            # RMSE/measured range
+            if range_measured > 0.0:
+                rmse_over_range = rmse/float(range_measured)
+            else:
+                rmse_over_range = np.nan
+            
             print '-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*'
             print 'Observation Group: %s' % (key)
             print '-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*'
+            print 'Number of observations in group: %d' % (count)
+            print '-------Measured Stats------------------'
+            print 'Minimum:   %10.4e  Maximum:   %10.4e' % (min_measured, max_measured)
+            print 'Range:     %10.4e' % (range_measured)
             print '-------Residual Stats------------------'
-            print 'Mean:    %10.4e  Std Dev: %10.4e' % (mean_res, std_res)
-            print 'Minimum: %10.4e  Maximum: %10.4e' % (min_res, max_res)
-            print 'Range:   %10.4e' % (range_res)
+            print 'Mean:      %10.4e  Std Dev:    %10.4e' % (mean_res, std_res)
+            print 'Minimum:   %10.4e  Maximum:    %10.4e' % (min_res, max_res)
+            print 'RMSE:      %10.4e  RMSE/Range: %10.4e' % (rmse, rmse_over_range)
+            print 'Range:     %10.4e' % (range_res)
             print '-------Absolute Residual Stats---------'
-            print 'Mean:    %10.4e  Std Dev: %10.4e' % (mean_abs_res, std_abs_res)
-            print 'Minimum: %10.4e  Maximum: %10.4e' % (min_abs_res, max_abs_res)
-            print 'Range:   %10.4e' % (range_abs_res)
+            print 'Mean:      %10.4e  Std Dev:   %10.4e' % (mean_abs_res, std_abs_res)
+            print 'Minimum:   %10.4e  Maximum:   %10.4e' % (min_abs_res, max_abs_res)
+            print 'Range:     %10.4e' % (range_abs_res)
             print '-------Weighted Residual Stats---------'
-            print 'Mean:    %10.4e  Std Dev: %10.4e' % (mean_w_res, std_w_res)
-            print 'Minimum: %10.4e  Maximum: %10.4e' % (min_w_res, max_w_res)
-            print 'Range:   %10.4e' % (range_w_res)
+            print 'Mean:      %10.4e  Std Dev:   %10.4e' % (mean_w_res, std_w_res)
+            print 'Minimum:   %10.4e  Maximum:   %10.4e' % (min_w_res, max_w_res)
+            print 'Range:     %10.4e' % (range_w_res)
             print ' '
 
     def plot_objective_contrib (self):
@@ -226,7 +313,7 @@ class Res:
         if plot_type == 'scatter':       
             plt.scatter(measured, modeled)
         if plot_type == 'hexbin':
-            plt.hexbin(measured, modeled, bins = 'log', alpha = 0.8, edgecolors = 'none')
+            plt.hexbin(measured, modeled, bins = 'log', alpha = 1.0, edgecolors = 'none')
   
         # Plot 1to1 (x=y) line
         data_min = min(min(measured), min(modeled))

@@ -8,7 +8,8 @@ from rmr import RMR
 from jactest import JacTest
 from identpar import Identpar
 from res import Res
+from cor import Cor
 
 
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 

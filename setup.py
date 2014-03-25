@@ -9,7 +9,7 @@ Main goal is for quick development of visuals on important PEST ouput.
 
 def run():
     setup(name="PestTools",
-        version="0.1",
+        version="0.1.4",
         description="Tools to aid in model calibration wtih PEST",
         url="",
         license="MIT",
